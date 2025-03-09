@@ -1,85 +1,311 @@
-
-      <!DOCTYPE html>
-      <html>
-        <head>
-          
-          
-          
-          <link rel="stylesheet" type="text/css" href="style.css" /><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" /><link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&display=swap" rel="stylesheet" />
-          
-          
-          
-        </head>
-        <body >
-          
-
-    <!-- HEADER AT THE TOP -->    
-    <div id="header">
-        <h1>hghgjhghjgjg</h1>
-    </div>
-
-    <!-- "ABOUT" SECTION -->    
-    <div id="about">
-        <h2>About Me</h2>
-         <p>bgjhghgjhgj jkh jkhjk hkj jkh kjh kh kjk jk kjh kj</p> 
-    </div>  
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>身心障礙113-專1-出題測驗</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .question {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+    .question h3 {
+      margin: 0 0 10px 0;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .incorrect {
+      background-color: #ffdddd;
+    }
+    .correct-answer {
+      color: green;
+      font-weight: bold;
+    }
+    #submit {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>身心障礙113-專1-出題測驗</h1>
+    <div id="quiz"></div>
+    <button id="submit">完成</button>
+    <div id="result"></div>
+  </div>
+  <script>
+    // 考題資料（此處僅示範 10 題，每一題加入唯一的 id）
+    const examData = [
+      {
+        id: 1,
+        ques: `1. 下列哪一位學者曾經進行分光實驗分解太陽光，並且提出七原色說？
+(A) 楊格 (Young)
+(B) 牛頓 (Newton)
+(C) 伊登 (Itten)
+(D) 曼賽爾 (Munsell)`,
+        ans: "B"
+      },
+      {
+        id: 2,
+        ques: `2. 電腦螢幕的色彩可以藉由色光三原色RGB光點混合構成，下列哪一個色彩的明度最高？
+(A) R200+G225+B250
+(B) R100+G100+B100
+(C) R255+G0+B255
+(D) R20+G50+B80`,
+        ans: "A"
+      },
+      {
+        id: 3,
+        ques: `3. 坊間常見色票本的封面標示尺寸有 129a (12*3.5公分 )，且是以色調為概念所發展，應是屬於下列何種色票？
+(A) Panton色票
+(B) DIC色票
+(C) PCCS色票
+(D) GCCS色票`,
+        ans: "C"
+      },
+      {
+        id: 4,
+        ques: `4. 色弱的形成是因為眼睛的何處出現缺陷或病變所導致？
+(A) 水晶體
+(B) 角膜
+(C) 睫狀肌
+(D) 錐狀細胞`,
+        ans: "D"
+      },
+      {
+        id: 5,
+        ques: `5. 小陳跟著家人開車到臺南參觀古蹟，發覺指引風景名勝的交通標誌有著相同的色彩運用，他發覺到的色彩應是下列何者？
+(A) 橙色
+(B) 藍色
+(C) 綠色
+(D) 棕色`,
+        ans: "D"
+      },
+      {
+        id: 6,
+        ques: `6. 傳統五正色與季節的對應關係中，下列哪個色彩可以對應冬季？
+(A) 白色
+(B) 黑色
+(C) 赤色
+(D) 青色`,
+        ans: "B"
+      },
+      {
+        id: 7,
+        ques: `7. 有關牛頓盤的敘述，下列何者正確？
+(A) 牛頓曾運用它來進行色散實驗
+(B) 牛頓在藝術創作時曾使用的調色盤
+(C) 由牛頓提出的色相環，共有七個原色
+(D) 由牛頓所設計出的旋轉混色盤`,
+        ans: "D"
+      },
+      {
+        id: 8,
+        ques: `8. 下列哪一種色彩心理感受，同時受到水晶體及波長折射率交互關係的影響？
+(A) 色彩冷暖感
+(B) 色彩角度感
+(C) 色彩距離感
+(D) 色彩重量感`,
+        ans: "C"
+      },
+      {
+        id: 9,
+        ques: `9. 好友準備開一間健康蔬果餐廳，他希望餐廳標誌可以給人愉快、香甜、營養的聯想，並且有促進食慾的感覺，你可以建議他選用何種色彩進行設計？
+(A) 灰色
+(B) 藍色
+(C) 橙色
+(D) 紫色`,
+        ans: "C"
+      },
+      {
+        id: 10,
+        ques: `10. 下列哪一位學者提出：色彩調和配色時應考慮色彩面積，大面積應使用低彩度、而小面積應使用高彩度？
+(A) 奧斯華德 (Ostwald)
+(B) 姆恩與史賓莎 (Moon and Spencer)
+(C) 雪勒佛 (Chevreul)
+(D) 曼賽爾 (Munsell)`,
+        ans: "D"
+      }
+    ];
     
-	<!-- "HOBBIES" SECTION -->
-<div id="hobbies">
-     <h2>My Hobbies</h2>   
-		
-		<!-- <div> ELEMENT THAT CONTAINS ALL THE CARDS -->
-		<div id="cards-container">
-
-			<!-- FIRST CARD -->
-			<div class="card">
-				<div class="card-img-container">
-					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI5X2aJmDKp5SkgCwI0ItRendqEW-RvAcBrw&s" /> 
-				</div>
-				<div class="card-text-container">
-					<h3>Movie</h3> 
-					<p>fdsfasdfasfsafaasfsfsafsa fdsafsafsaf fdsafa sda </p> 
-				</div>
-			</div>
-
-			<!-- SECOND CARD -->
-			<div class="card">
-				<div class="card-img-container">
-					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL7Me4ERbVhj03mrsmnAE8Q5Snd_Oc7N64FA&s" /> 
-				</div>
-				<div class="card-text-container">
-					<h3>Game</h3> 
-					<p>gfghfhgf hjgjhghjhb kuhkjkjkjhkj kjgkjhkj jkkjkj hghjghj</p> 
-				</div>
-			</div>
-			 
-			<!-- THIRD CARD -->
-			<div class="card">
-				<div class="card-img-container">
-					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgR1E5pdqYI8kb1PN3W4UqcYgz8kDnfnEVlg&s" /> 
-				</div>
-				<div class="card-text-container">
-					<h3>Book</h3> 
-					<p>weq dfasdf  dsfsa  da fas   fdsad fasdfa</p> 
-				</div>
-			</div>
-			  
-		</div>
-		<!-- END TAG FOR <div id="cards-container"> -->
-
-</div>
-
-	<!-- END TAG FOR <div id="hobbies"> -->
-    <div id="link">
-        <a href="#">最上面</a>
-        <a href="#about">About Me</a>
-        <a href="#hobbies">Hobbies</a>
-        <a href="beeGame/index.html" >Bee Game</a>
-    </div>
-
-          
-          
-          
-        </body>
-      </html>
+    let selectedQuestions = [];
+    const quizDiv = document.getElementById('quiz');
+    const resultDiv = document.getElementById('result');
+    const submitBtn = document.getElementById('submit');
     
+    // 洗牌函式（Fisher-Yates 洗牌法）
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    // 讀取 localStorage 中已答對的題目 id 陣列
+    function loadAnsweredCorrect() {
+      const data = localStorage.getItem('answeredCorrect');
+      return data ? JSON.parse(data) : [];
+    }
+    
+    // 儲存答對的題目 id 陣列到 localStorage
+    function saveAnsweredCorrect(arr) {
+      localStorage.setItem('answeredCorrect', JSON.stringify(arr));
+    }
+    
+    // 產生題目：排除已答對的題目；如果全部已答對則重置
+    function generateQuiz() {
+      // 清空題目與結果區域
+      quizDiv.innerHTML = '';
+      resultDiv.innerHTML = '';
+      
+      // 讀取已答對題目的 id 陣列
+      let answeredCorrect = loadAnsweredCorrect();
+      // 如果全部題目皆已答對，則清空已答對陣列
+      if (answeredCorrect.length === examData.length) {
+        answeredCorrect = [];
+        saveAnsweredCorrect(answeredCorrect);
+      }
+      
+      // 篩選尚未答對的題目
+      let availableQuestions = examData.filter(q => !answeredCorrect.includes(q.id));
+      
+      // 將可用題目隨機打亂
+      let shuffled = shuffleArray([...availableQuestions]);
+      // 若可用題目數大於或等於 10 則抽 10 題，否則就全部出題
+      selectedQuestions = (shuffled.length >= 10) ? shuffled.slice(0, 10) : shuffled;
+      
+      // 依題目產生 DOM 元素
+      selectedQuestions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+        questionDiv.id = `question-${index}`;
+        
+        // 題號標題（例如：「第 1 題」）
+        const header = document.createElement('h3');
+        header.textContent = `第 ${index + 1} 題`;
+        questionDiv.appendChild(header);
+        
+        // 將題目字串以中文問號「？」切割，僅取前半部（題幹）
+        let parts = question.ques.split('？');
+        let questionText = parts[0] + '？';
+        const quesPara = document.createElement('p');
+        quesPara.textContent = questionText;
+        questionDiv.appendChild(quesPara);
+        
+        // 從問號後的部分解析選項
+        let options = [];
+        if (parts.length > 1) {
+          let optionsText = parts[1].trim();
+          // 根據換行符號拆分成多行
+          let lines = optionsText.split('\n').filter(line => line.trim() !== '');
+          lines.forEach(line => {
+            let trimmed = line.trim();
+            // 利用正規表達式解析格式，例如：(A) 選項內容 或 A) 選項內容
+            let match = trimmed.match(/^\(?([A-D])\)?\s*(.*)/);
+            if(match) {
+              options.push({
+                letter: match[1],
+                text: match[2]
+              });
+            }
+          });
+        }
+        // 若無法解析選項，則預設提供 A ~ D
+        if(options.length === 0) {
+          options = ['A','B','C','D'].map(letter => ({letter: letter, text: letter}));
+        }
+        
+        // 建立選項：每個選項用 radio 與文字呈現
+        const optionsDiv = document.createElement('div');
+        optionsDiv.classList.add('options');
+        options.forEach(opt => {
+          const label = document.createElement('label');
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = `question-${index}`;
+          radio.value = opt.letter;
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(` ${opt.letter}. ${opt.text}`));
+          optionsDiv.appendChild(label);
+        });
+        questionDiv.appendChild(optionsDiv);
+        
+        quizDiv.appendChild(questionDiv);
+      });
+    }
+    
+    // 初次產生題目
+    generateQuiz();
+    
+    // 當按鈕被點擊時，根據按鈕文字判斷行為
+    submitBtn.addEventListener('click', function() {
+      if (submitBtn.textContent === "完成") {
+        let score = 0;
+        // 讀取 localStorage 中的已答對題目 id 陣列
+        let answeredCorrect = loadAnsweredCorrect();
+        
+        selectedQuestions.forEach((question, index) => {
+          const radios = document.getElementsByName(`question-${index}`);
+          let userAnswer = null;
+          radios.forEach(radio => {
+            if (radio.checked) {
+              userAnswer = radio.value;
+            }
+          });
+          const questionDiv = document.getElementById(`question-${index}`);
+          // 移除先前可能出現的正確答案標示
+          const existingCorrect = questionDiv.querySelector('.correct-answer');
+          if (existingCorrect) {
+            existingCorrect.remove();
+          }
+          
+          // 檢查答案
+          if (userAnswer === question.ans) {
+            score++;
+            // 若該題 id 尚未存在，則加入陣列
+            if (!answeredCorrect.includes(question.id)) {
+              answeredCorrect.push(question.id);
+            }
+          } else {
+            questionDiv.classList.add('incorrect');
+            const correctText = document.createElement('p');
+            correctText.classList.add('correct-answer');
+            correctText.textContent = `正確答案：${question.ans}`;
+            questionDiv.appendChild(correctText);
+          }
+        });
+        // 儲存更新後的答對題目 id 陣列
+        saveAnsweredCorrect(answeredCorrect);
+        resultDiv.textContent = `你的得分：${score} / ${selectedQuestions.length}`;
+        // 完成後，按鈕變成「重新出題」
+        submitBtn.textContent = "重新出題";
+      } else {
+        // 當按下「重新出題」時，重新產生題目並將按鈕文字改回「完成」
+        generateQuiz();
+        submitBtn.textContent = "完成";
+      }
+    });
+  </script>
+</body>
+</html>
